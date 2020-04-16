@@ -1,0 +1,89 @@
+////////////////////////////MODELOS//////////////////////////////
+USUARIOS
+{
+	id:incremental
+	nombre:string
+	apellido:string
+	correo:string->unico()
+	contraseña:string->hash()
+	api_key:string
+	fecha:date
+	foto:string->nullable()
+	role:string['ROLE_ADM', 'ROLE_USR']
+}
+
+CLIENTES
+{
+	id:incremental
+	id_usaruario:USUARIO
+	ci:string
+	direccion1:string
+	direccion2:string
+	tlf1:string
+	tlf2:string
+}
+
+COTIZACIONES
+{
+	id:incremental
+	tasaBS_DLS:float
+	tasaBS_EUR:float
+	fecha:date
+}
+
+PRODUCTOS
+{
+	id:string->unico
+	nombre:string
+	descripcion:string
+	foto:string
+	precio_DLS:float
+	precio_EUR:float
+}
+
+COMPRAS
+{
+	id:incemental
+	estado_compra:string
+	id_cliente:CLIENTES
+	referencia_pago:string
+	monto:float
+	foto_transferencia:string
+	pdf_transferencia:string
+}
+
+CATEGORIAS
+{
+	id:incremental
+	nombre:string
+	fecha:date
+}
+
+CATPROD
+{
+	id:incremental
+	id_productos:PRODUCTOS
+	id_categorias:CATEGORIAS
+}
+
+MENSAJES
+{
+	id:incremental
+	id_usuario:USUARIOS
+	id_cliente:CLIENTES
+	texto:string
+	fecha:date('d-m-Y H:i:s') // se establece la fecha en dia,mes,año,hora,minuto,segundo
+}
+
+CUENTAS
+{
+	id:string->unico //prefijo del banco
+	nombre_banco:string
+	tipo_cuenta:string
+	nro_cuenta:string
+	nombre_titular:string
+	ci_titular:string
+	tlf_titular:string
+	correo_titular:string
+
+}
