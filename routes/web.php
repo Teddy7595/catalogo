@@ -3,6 +3,18 @@
 use Illuminate\Support\Facades\Route;
 
 /*
+ESTRUCTURA DE RESPUESTA
+json
+(
+	'status' => 200,
+	'response' => 'All ok!',
+	'error' => 'Nothing',
+	'data' => 'ok, all right!!',
+	'ok' => true
+);
+*/
+
+/*
 |--------------------------------------------------------------------------
 | Web Routes
 |--------------------------------------------------------------------------
@@ -15,4 +27,13 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
+});
+
+Route::get('token',function(){ return csrf_field(); });
+
+Route::get('api/user/token','UserController@token');
+
+Route::group(['prefix'=>'api'],function()
+{
+	Route::resource('user','UserController');
 });

@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -10,13 +10,16 @@ class User extends Authenticatable
 {
     use Notifiable;
 
+    protected $table = 'catg_users';
+
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
-    protected $fillable = [
-        'name', 'email', 'password',
+    protected $fillable = 
+    [
+        'name', 'email', 'password','ci'
     ];
 
     /**
@@ -24,8 +27,13 @@ class User extends Authenticatable
      *
      * @var array
      */
-    protected $hidden = [
-        'password', 'remember_token',
+    protected $hidden = 
+    [
+        'password', 
+        'remember_token', 
+        'is_admin', 
+        'key', 
+        'email_verified_at'
     ];
 
     /**
@@ -33,7 +41,15 @@ class User extends Authenticatable
      *
      * @var array
      */
-    protected $casts = [
-        'email_verified_at' => 'datetime',
+    protected $casts = 
+    [
+        'email_verified_at' => 'datetime:d-m-Y H:i',
+        'created_at' => 'datetime:d-m-Y H:i',
+        'updated_at' => 'datetime:d-m-Y H:i'
     ];
+
+    protected $dateformat = 'd-m-Y H:i';
+
+    protected $attributes = [];
+
 }

@@ -13,18 +13,19 @@ class CreateUsersTable extends Migration
      */
     public function up()
     {
-        Schema::create('catg_users', function (Blueprint $table) {
+        Schema::create('catg_users', function (Blueprint $table) 
+        {
             $table->id();
             $table->string('name');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->rememberToken();
+            $table->rememberToken()->nullable();
             $table->timestamps();
-            $table->enum('role',['admin_role','client_role']);
-            $table->string('key');
+            $table->string('role')->default('cliente_role');
+            $table->boolean('is_admin')->default(false);
             $table->string('img')->nullable();
-            $table->string('ci',15);
+            $table->string('ci',20);
         });
     }
 
