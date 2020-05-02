@@ -2,24 +2,20 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
+use App\Models\Bank;
 use Illuminate\Http\Request;
-use App\Http\Requests\User\UserCreateRequest;
-use App\Http\Requests\User\UserUpdateRequest;
+use App\Http\Requests\Bank\BankCreateRequest;
 
-class UserController extends Controller
+class BankController extends Controller
 {
-
-    public function token(){ return csrf_token();}
-
-    //funcion que me retorna todos los usuarios
+    //funcion que me retorna todos los BANCOS
     public function index()
     {
-        //funcion que retorna todos los usuarios registrados
+        //funcion que retorna todos los BANCOS registrados
 
-        if (User::count() == 0) 
+        if (Bank::count() == 0) 
         {
-            $this->json['response'] = 'ops!, No se encontraron usuarios =/';
+            $this->json['response'] = 'Ups!, No se encontraron bancos resgitrados =/';
             $this->json['data'] = null;
             $this->json['error'] = null;
             $this->json['ok'] = true;
@@ -27,52 +23,53 @@ class UserController extends Controller
 
         }else
         {
-            $this->json['response'] = 'Se encontró '.User::count().' usuarios';
+            $this->json['response'] = 'Se encontró '.Bank::count().' cuentas bancarias registradas';
             $this->json['error'] = null;
-            $this->json['data'] = User::all();
+            $this->json['data'] = Bank::all();
             $this->json['ok'] = true;
             $this->json['status'] = 200;
         }
 
-        return response()->json($this->json,202);
-    }    
+        return response()->json($this->json,200);
+    }
 
-    //funcion que me retorna en base a su ID un usuario
+    //funcion que me retorna en base a su ID un BANCO
     public function show($id)
     {
-        $user = User::find($id);
+        //BUSCO EL BANCO, LO ENCUENTRA HAGO EL POCEDIMIENTO, DE LO CONTRARIO DEVUELVO
+        //NO ENCONTRADO
+        $bank = Bank::find($id);
 
-        if ($user) 
+        if ($bank) 
         { 
-            $this->json['response'] = 'Usuario encontrado! ;-)';
-            $this->json['data'] = $user;
+            $this->json['response'] = 'Cuenta bancaria encontrada! ;-)';
+            $this->json['data'] = $bank;
             $this->json['error'] = null;
             $this->json['ok'] = true;
-            $this->json['status'] = 202;
-
-            return response()->json($this->json,202);
+            $this->json['status'] = 200;
+ 
+            return response()->json($this->json,200);
         }else
         {
-            $this->json['response'] = 'Usuario no encontrado =/';
+            $this->json['response'] = 'Cuenta bancaria no encontrada =/';
             $this->json['data'] = null;
             $this->json['error'] = null;
             $this->json['ok'] = true;
             $this->json['status'] = 400;
-
+ 
             return response()->json($this->json,400);
         }
     }
 
-    //funcion que me guarda un usuario
-    public function store(UserCreateRequest $request)
+    //funcion que me permite guardar un banco
+    public function store(BankCreateRequest $request)
     {
         try
         {
             $data = $request->validated(); 
-            $data['password'] = hash('sha256', $data['password']); 
 
-            $this->json['response'] = 'Usuario creado! verifique su cuenta ;-)';
-            $this->json['data'] = User::create($data);
+            $this->json['data'] = Bank::create($data);
+            $this->json['response'] = 'Cuenta bancaria creada! ;-)';
             $this->json['error'] = null;
             $this->json['ok'] = true;
             $this->json['status'] = 201;
@@ -81,7 +78,7 @@ class UserController extends Controller
 
         }catch(\Throwable $e)
         {
-            $this->json['response'] = 'Ups!, ha ocurrido un error =/';
+            $this->json['response'] = 'Ups!, ha ocurrido un error =/'.$e->getmessage();
             $this->json['data'] = null;
             $this->json['error'] = null;
             $this->json['ok'] = false;
@@ -91,22 +88,20 @@ class UserController extends Controller
         }
     }
 
-    //funcion que me edita un usuario basado en su id
-    public function update(UserUpdateRequest $request, $id)
+    //funcion que me edita un banco basado en su id
+    public function update(BankCreateRequest $request, $id)
     { 
 
-        $user = User::find($id);
+        $bank = Bank::find($id);
         $data = $request->validated();
-        $data['password'] = hash('sha256', $data['password']);
 
         try
         {
-            if ($user) 
+            if ($bank) 
             {
-                $user->update($data);
-                $data['password'] = '*************************';
+                $bank->update($data);
 
-                $this->json['response'] = 'Usuario actualizado ;-)';
+                $this->json['response'] = 'Cuenta bancaria actualizada ;-)';
                 $this->json['data'] = $data; 
                 $this->json['error'] = null;
                 $this->json['ok'] = true;
@@ -115,7 +110,7 @@ class UserController extends Controller
                 return response()->json($this->json,200);
             }else
             {
-                $this->json['response'] = 'Usuario no encontrado =/';
+                $this->json['response'] = 'Cuenta bancaria no encontrada =/';
                 $this->json['data'] = null;
                 $this->json['error'] = null;
                 $this->json['ok'] = true;
@@ -125,7 +120,7 @@ class UserController extends Controller
             }
         }catch(\Throwable $e)
         {
-            $this->json['response'] = 'Ups!, ha ocurrido un error =/';
+            $this->json['response'] = $e->getmessage();//'Ups!, ha ocurrido un error =/';
             $this->json['data'] = null;
             $this->json['error'] = null;
             $this->json['ok'] = false;
@@ -135,26 +130,26 @@ class UserController extends Controller
         }
     }
 
-    //funcion que elimina usuarios basado en su id
+    //funcion que me permite borrar un banco
     public function destroy($id)
     {
-        $user = User::find($id);
+        $bank = Bank::find($id);
         try
         {
-            if ($user) 
+            if ($bank) 
             {
-                $this->json['response'] = 'Usuario eliminado ;-)';
-                $this->json['data'] = $user;
+                $this->json['response'] = 'Cuenta bancaria  eliminada ;-)';
+                $this->json['data'] = $bank;
                 $this->json['error'] = null;
                 $this->json['ok'] = true;
                 $this->json['status'] = 200;
 
-                $user->delete();
+                $bank->delete();
 
                 return response()->json($this->json,200);
             }else
             {
-                $this->json['response'] = 'Usuario no encontrado =/';
+                $this->json['response'] = 'Cuenta bancaria  no encontrada =/';
                 $this->json['data'] = null;
                 $this->json['error'] = null;
                 $this->json['ok'] = true;
@@ -173,4 +168,6 @@ class UserController extends Controller
             return response()->json($this->json, 500);
         } 
     }
+
+
 }

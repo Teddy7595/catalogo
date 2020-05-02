@@ -36,4 +36,7 @@ Route::get('api/user/token','UserController@token');
 Route::group(['prefix'=>'api'],function()
 {
 	Route::resource('user','UserController');
+	Route::resource('bank','BankController');
+	Route::resource('quote', 'QuoteController');
+	Route::resource('category', 'CategoryController');
 });

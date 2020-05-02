@@ -2,24 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
+use App\Models\Quote;
 use Illuminate\Http\Request;
-use App\Http\Requests\User\UserCreateRequest;
-use App\Http\Requests\User\UserUpdateRequest;
+use App\Http\Requests\Quote\QuoteCreateRequest;
 
-class UserController extends Controller
+class QuoteController extends Controller
 {
-
-    public function token(){ return csrf_token();}
-
-    //funcion que me retorna todos los usuarios
+    //funcion que me retorna todas las cotizaciones
     public function index()
     {
-        //funcion que retorna todos los usuarios registrados
 
-        if (User::count() == 0) 
+        if (Quote::count() == 0) 
         {
-            $this->json['response'] = 'ops!, No se encontraron usuarios =/';
+            $this->json['response'] = 'Ups!, No se encontraron cotizaciones =/';
             $this->json['data'] = null;
             $this->json['error'] = null;
             $this->json['ok'] = true;
@@ -27,33 +22,33 @@ class UserController extends Controller
 
         }else
         {
-            $this->json['response'] = 'Se encontró '.User::count().' usuarios';
+            $this->json['response'] = 'Se encontró '.Quote::count().' cotizaciones';
             $this->json['error'] = null;
-            $this->json['data'] = User::all();
+            $this->json['data'] = Quote::all();
             $this->json['ok'] = true;
             $this->json['status'] = 200;
         }
 
-        return response()->json($this->json,202);
-    }    
+        return response()->json($this->json,200);
+    }
 
-    //funcion que me retorna en base a su ID un usuario
+    //funcion que me retorna en base a su ID una cotizacion
     public function show($id)
     {
-        $user = User::find($id);
+        $quote = Quote::find($id);
 
-        if ($user) 
+        if ($quote) 
         { 
-            $this->json['response'] = 'Usuario encontrado! ;-)';
-            $this->json['data'] = $user;
+            $this->json['response'] = 'Cotizacion encontrada! ;-)';
+            $this->json['data'] = $quote;
             $this->json['error'] = null;
             $this->json['ok'] = true;
-            $this->json['status'] = 202;
+            $this->json['status'] = 200;
 
-            return response()->json($this->json,202);
+            return response()->json($this->json,200);
         }else
         {
-            $this->json['response'] = 'Usuario no encontrado =/';
+            $this->json['response'] = 'Cotizacion no encontrada =/';
             $this->json['data'] = null;
             $this->json['error'] = null;
             $this->json['ok'] = true;
@@ -63,16 +58,17 @@ class UserController extends Controller
         }
     }
 
-    //funcion que me guarda un usuario
-    public function store(UserCreateRequest $request)
+    //funcion que me guarda una cotizacion
+    public function store(QuoteCreateRequest $request)
     {
         try
         {
             $data = $request->validated(); 
-            $data['password'] = hash('sha256', $data['password']); 
+            $data['bsdls'] = str_replace(',','.',$data['bsdls']); 
+            $data['bseur'] = str_replace(',','.',$data['bseur']); 
 
-            $this->json['response'] = 'Usuario creado! verifique su cuenta ;-)';
-            $this->json['data'] = User::create($data);
+            $this->json['response'] = 'Cotización creada!! ;-)';
+            $this->json['data'] = Quote::Create($data);
             $this->json['error'] = null;
             $this->json['ok'] = true;
             $this->json['status'] = 201;
@@ -91,22 +87,20 @@ class UserController extends Controller
         }
     }
 
-    //funcion que me edita un usuario basado en su id
-    public function update(UserUpdateRequest $request, $id)
+    //funcion que me edita una cotizacion basado en su id
+    public function update(QuoteCreateRequest $request, $id)
     { 
 
-        $user = User::find($id);
+        $quote = Quote::find($id);
         $data = $request->validated();
-        $data['password'] = hash('sha256', $data['password']);
 
         try
         {
-            if ($user) 
+            if ($quote) 
             {
-                $user->update($data);
-                $data['password'] = '*************************';
+                $quote->update($data);
 
-                $this->json['response'] = 'Usuario actualizado ;-)';
+                $this->json['response'] = 'Cotización actualizada ;-)';
                 $this->json['data'] = $data; 
                 $this->json['error'] = null;
                 $this->json['ok'] = true;
@@ -115,7 +109,7 @@ class UserController extends Controller
                 return response()->json($this->json,200);
             }else
             {
-                $this->json['response'] = 'Usuario no encontrado =/';
+                $this->json['response'] = 'Cotización no encontrada =/';
                 $this->json['data'] = null;
                 $this->json['error'] = null;
                 $this->json['ok'] = true;
@@ -135,26 +129,26 @@ class UserController extends Controller
         }
     }
 
-    //funcion que elimina usuarios basado en su id
+    //funcion que elimina una cotizacion basado en su id
     public function destroy($id)
     {
-        $user = User::find($id);
+        $quote = Quote::find($id);
         try
         {
-            if ($user) 
+            if ($quote) 
             {
-                $this->json['response'] = 'Usuario eliminado ;-)';
-                $this->json['data'] = $user;
+                $this->json['response'] = 'Cotización eliminada ;-)';
+                $this->json['data'] = $quote;
                 $this->json['error'] = null;
                 $this->json['ok'] = true;
                 $this->json['status'] = 200;
 
-                $user->delete();
+                $quote->delete();
 
                 return response()->json($this->json,200);
             }else
             {
-                $this->json['response'] = 'Usuario no encontrado =/';
+                $this->json['response'] = 'Cotización no encontrado =/';
                 $this->json['data'] = null;
                 $this->json['error'] = null;
                 $this->json['ok'] = true;

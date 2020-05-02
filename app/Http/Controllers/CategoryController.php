@@ -2,24 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
+use App\Models\Category;
 use Illuminate\Http\Request;
-use App\Http\Requests\User\UserCreateRequest;
-use App\Http\Requests\User\UserUpdateRequest;
+use App\Http\Requests\Category\CategoryCreateRequest;
+use App\Http\Requests\Category\CategoryUpdateRequest;
 
-class UserController extends Controller
+class CategoryController extends Controller
 {
-
-    public function token(){ return csrf_token();}
-
-    //funcion que me retorna todos los usuarios
+    //funcion que me permite ver todas las categorias
     public function index()
     {
-        //funcion que retorna todos los usuarios registrados
-
-        if (User::count() == 0) 
+        if (Category::count() == 0) 
         {
-            $this->json['response'] = 'ops!, No se encontraron usuarios =/';
+            $this->json['response'] = 'Ups!, No se encontraron categorias resgitradas =/';
             $this->json['data'] = null;
             $this->json['error'] = null;
             $this->json['ok'] = true;
@@ -27,25 +22,25 @@ class UserController extends Controller
 
         }else
         {
-            $this->json['response'] = 'Se encontró '.User::count().' usuarios';
+            $this->json['response'] = 'Se encontró '.Category::count().' categorias registradas';
             $this->json['error'] = null;
-            $this->json['data'] = User::all();
+            $this->json['data'] = Category::all();
             $this->json['ok'] = true;
             $this->json['status'] = 200;
         }
 
-        return response()->json($this->json,202);
-    }    
+        return response()->json($this->json,200);
+    }
 
-    //funcion que me retorna en base a su ID un usuario
+    //funcion que me retorna en base a su ID una categoria
     public function show($id)
     {
-        $user = User::find($id);
+        $category = Category::find($id);
 
-        if ($user) 
+        if ($category) 
         { 
-            $this->json['response'] = 'Usuario encontrado! ;-)';
-            $this->json['data'] = $user;
+            $this->json['response'] = 'Categoria encontrada! ;-)';
+            $this->json['data'] = $category;
             $this->json['error'] = null;
             $this->json['ok'] = true;
             $this->json['status'] = 202;
@@ -53,7 +48,7 @@ class UserController extends Controller
             return response()->json($this->json,202);
         }else
         {
-            $this->json['response'] = 'Usuario no encontrado =/';
+            $this->json['response'] = 'Categoria no encontrada =/';
             $this->json['data'] = null;
             $this->json['error'] = null;
             $this->json['ok'] = true;
@@ -63,16 +58,15 @@ class UserController extends Controller
         }
     }
 
-    //funcion que me guarda un usuario
-    public function store(UserCreateRequest $request)
+    //funcion que me permite agregar una categoria
+    public function store(CategoryCreateRequest $request)
     {
         try
         {
             $data = $request->validated(); 
-            $data['password'] = hash('sha256', $data['password']); 
 
-            $this->json['response'] = 'Usuario creado! verifique su cuenta ;-)';
-            $this->json['data'] = User::create($data);
+            $this->json['response'] = 'Categoria creada!! ;-)';
+            $this->json['data'] = Category::Create($data);
             $this->json['error'] = null;
             $this->json['ok'] = true;
             $this->json['status'] = 201;
@@ -81,7 +75,7 @@ class UserController extends Controller
 
         }catch(\Throwable $e)
         {
-            $this->json['response'] = 'Ups!, ha ocurrido un error =/';
+            $this->json['response'] = 'Ups!, ha ocurrido un error =/';;
             $this->json['data'] = null;
             $this->json['error'] = null;
             $this->json['ok'] = false;
@@ -91,22 +85,20 @@ class UserController extends Controller
         }
     }
 
-    //funcion que me edita un usuario basado en su id
-    public function update(UserUpdateRequest $request, $id)
+    //funcion que me edita una categoria y su departamento basado en su id
+    public function update(CategoryUpdateRequest $request, $id)
     { 
 
-        $user = User::find($id);
+        $category = Category::find($id);
         $data = $request->validated();
-        $data['password'] = hash('sha256', $data['password']);
 
         try
         {
-            if ($user) 
+            if ($category) 
             {
-                $user->update($data);
-                $data['password'] = '*************************';
+                $category->update($data);
 
-                $this->json['response'] = 'Usuario actualizado ;-)';
+                $this->json['response'] = 'Categoria actualizada ;-)';
                 $this->json['data'] = $data; 
                 $this->json['error'] = null;
                 $this->json['ok'] = true;
@@ -115,7 +107,7 @@ class UserController extends Controller
                 return response()->json($this->json,200);
             }else
             {
-                $this->json['response'] = 'Usuario no encontrado =/';
+                $this->json['response'] = 'Categoria no encontrada =/';
                 $this->json['data'] = null;
                 $this->json['error'] = null;
                 $this->json['ok'] = true;
@@ -138,23 +130,23 @@ class UserController extends Controller
     //funcion que elimina usuarios basado en su id
     public function destroy($id)
     {
-        $user = User::find($id);
+        $category = Category::find($id);
         try
         {
-            if ($user) 
+            if ($category) 
             {
-                $this->json['response'] = 'Usuario eliminado ;-)';
-                $this->json['data'] = $user;
+                $this->json['response'] = 'Categoria eliminada ;-)';
+                $this->json['data'] = $category;
                 $this->json['error'] = null;
                 $this->json['ok'] = true;
                 $this->json['status'] = 200;
 
-                $user->delete();
+                $category->delete();
 
                 return response()->json($this->json,200);
             }else
             {
-                $this->json['response'] = 'Usuario no encontrado =/';
+                $this->json['response'] = 'Categoria no encontrada =/';
                 $this->json['data'] = null;
                 $this->json['error'] = null;
                 $this->json['ok'] = true;
