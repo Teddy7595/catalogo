@@ -35,6 +35,12 @@ class User extends Authenticatable
         'email_verified_at'
     ];
 
+    protected $guarded = 
+    [
+        'is_admin',
+        'role'
+    ];
+
     /**
      * The attributes that should be cast to native types.
      *

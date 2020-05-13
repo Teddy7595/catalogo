@@ -13,7 +13,15 @@ class Notify extends Migration
      */
     public function up()
     {
-        Schema::create();
+        Schema::create('catg_notify', function (Blueprint $table) 
+        {
+            $table->id(); //id unico incremental por noticia
+            $table->string('sender_id'); // id de quien manda
+            $table->string('reciver_id');// id de quien recibe 
+            $table->string('link'); //link o direccion hacia donde apuntará la notificacion
+            $table->text('body'); //descripción de la notificación
+            $table->timestamp('created_at'); //marca de tiempo
+        });
     }
 
     /**
@@ -23,6 +31,6 @@ class Notify extends Migration
      */
     public function down()
     {
-        //
+        
     }
 }
