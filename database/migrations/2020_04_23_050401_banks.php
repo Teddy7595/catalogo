@@ -16,14 +16,14 @@ class Banks extends Migration
         Schema::create('catg_banks', function (Blueprint $table) 
         {
             $table->id();
-            $table->string('prefix');
-            $table->string('name');
-            $table->string('cod');
-            $table->string('titular');
-            $table->string('ci');
-            $table->string('phone');
-            $table->string('email');
-            $table->string('type');
+            $table->string('prefix');//prefijo del banco
+            $table->string('name'); //nombre del banco
+            $table->string('cod'); //cuenta del banco
+            $table->string('titular'); //nombre del titular de la cuenta
+            $table->string('ci'); //cedula del titular
+            $table->string('phone'); //telefono del titular
+            $table->string('email'); //email del titular
+            $table->string('type'); // tipo de cuenta
             $table->timestamp('created_at');
         });
     }

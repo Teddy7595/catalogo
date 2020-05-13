@@ -3,12 +3,8 @@
 namespace App\Http\Requests\User;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Contracts\Validation\Validator;
-use Illuminate\Validation\ValidationException;
-use Illuminate\Http\Exceptions\HttpResponseException;
 
-class UserCreateRequest extends FormRequest
+class ClientCreateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -34,7 +30,8 @@ class UserCreateRequest extends FormRequest
             'password' => 'required',
             'email' => 'required|unique:App\Models\User',
             'ci' => 'string|required',
-            'adress1' => 'string|required'
+            'adress1' => 'string|required',
+            'phone1' => 'string|rquired'
         ];
     }
 
@@ -46,7 +43,8 @@ class UserCreateRequest extends FormRequest
             'password.required' => 'El password es obligatorio',
             'email.required' => 'El email es obligatorio',
             'ci.required' => 'El codigo de identificación es obligatorio',
-            'adress1.required' => 'Es obligatorio una dirección'  
+            'phone1.required' => 'Es obligatorio un nro telefónico',
+            'adress.required' => 'Es obligatorio una dirección'  
         ];
     }
 
@@ -65,5 +63,4 @@ class UserCreateRequest extends FormRequest
             response()->json($json, 422)
         );
     }
-    
 }

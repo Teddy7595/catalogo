@@ -18,6 +18,7 @@ class Category extends Migration
             $table->id();
             $table->string('name')->unique(); //nombre de la categoria
             $table->string('department'); //si es de tipo bodegon o ferreteria u otros
+            $table->double('iva',2,2)->nullable(); //iva de la categoria
             $table->timestamp('created_at');
         });
     }

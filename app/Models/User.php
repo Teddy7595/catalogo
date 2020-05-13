@@ -32,7 +32,6 @@ class User extends Authenticatable
         'password', 
         'remember_token', 
         'is_admin', 
-        'key', 
         'email_verified_at'
     ];
 
@@ -51,5 +50,10 @@ class User extends Authenticatable
     protected $dateformat = 'd-m-Y H:i';
 
     protected $attributes = [];
+
+    public function client()
+    {
+       return $this->hasOne('App\Models\Client');
+    }
 
 }

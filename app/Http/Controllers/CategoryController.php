@@ -43,9 +43,9 @@ class CategoryController extends Controller
             $this->json['data'] = $category;
             $this->json['error'] = null;
             $this->json['ok'] = true;
-            $this->json['status'] = 202;
+            $this->json['status'] = 200;
 
-            return response()->json($this->json,202);
+            return response()->json($this->json,200);
         }else
         {
             $this->json['response'] = 'Categoria no encontrada =/';
